@@ -1,188 +1,134 @@
 <!DOCTYPE html>
-<html lang="fa" dir="rtl">
+<html lang="fa">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منوی حرفه‌ای رستوران</title>
-    <style>
-        :root {
-            --primary-color: #e67e22;
-            --dark-color: #2c3e50;
-            --light-color: #ffffff;
-            /* ۱. بخش تغییر فونت: نام فونت دلخواه را اینجا جایگزین کنید */
-            --main-font: 'Tahoma', 'Arial', sans-serif;
-        }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>منوی رستوران</title>
 
-        body {
-            font-family: var(--main-font);
-            margin: 0;
-            padding: 20px;
-            
-            /* ۲. بک‌گراند شطرنجی ساده */
-            background-color: #f0f0f0;
-            background-image: linear-gradient(45deg, #e5e5e5 25%, transparent 25%, transparent 75%, #e5e5e5 75%, #e5e5e5), 
-                              linear-gradient(45deg, #e5e5e5 25%, transparent 25%, transparent 75%, #e5e5e5 75%, #e5e5e5);
-            background-size: 40px 40px;
-            background-position: 0 0, 20px 20px;
-        }
+<!-- ========= تغییر فونت ========= -->
+<!-- فقط لینک فونت دلخواهت رو اینجا جایگزین کن -->
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;500;700&display=swap" rel="stylesheet">
 
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            background: rgba(255, 255, 255, 0.95);
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        }
+<style>
+:root{--bg:#f6f6f6;--card:#fff;--text:#000}
 
-        /* ۳. استایل لوگوی رستوران */
-        .logo-section {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .restaurant-logo {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 4px solid var(--primary-color);
-        }
+/* حالت شب خودکار */
+@media (prefers-color-scheme: dark){
+:root{--bg:#121212;--card:#1e1e1e;--text:#eee}
+}
 
-        h1 {
-            text-align: center;
-            color: var(--dark-color);
-            margin-top: 10px;
-        }
+/* ========= بکگراند شطرنجی ========= */
+body{
+font-family:'Vazirmatn',sans-serif;
+background:
+linear-gradient(45deg,#e9e9e9 25%,transparent 25%),
+linear-gradient(-45deg,#e9e9e9 25%,transparent 25%),
+linear-gradient(45deg,transparent 75%,#e9e9e9 75%),
+linear-gradient(-45deg,transparent 75%,#e9e9e9 75%);
+background-size:40px 40px;
+background-position:0 0,0 20px,20px -20px,-20px 0px;
+margin:0;color:var(--text)}
 
-        .admin-section {
-            background: #f9f9f9;
-            padding: 20px;
-            border-radius: 15px;
-            margin-bottom: 30px;
-            border: 1px dashed #ccc;
-        }
-
-        .admin-section input {
-            padding: 10px;
-            margin: 5px;
-            border-radius: 8px;
-            border: 1px solid #ddd;
-            width: calc(33% - 20px);
-        }
-
-        .menu-item {
-            display: flex;
-            align-items: center;
-            padding: 15px;
-            border-bottom: 1px solid #eee;
-            gap: 20px;
-        }
-
-        /* ۴. استایل عکس غذاها */
-        .food-img {
-            width: 80px;
-            height: 80px;
-            border-radius: 12px;
-            object-fit: cover;
-            background-color: #ddd; /* جایگزین اگر عکس نبود */
-        }
-
-        .item-info {
-            flex-grow: 1;
-        }
-
-        .item-info h3 {
-            margin: 0 0 5px 0;
-            color: var(--dark-color);
-        }
-
-        .item-price {
-            color: var(--primary-color);
-            font-weight: bold;
-        }
-
-        .delete-btn {
-            background-color: #ff4757;
-            color: white;
-            border: none;
-            padding: 8px 12px;
-            border-radius: 8px;
-            cursor: pointer;
-        }
-    </style>
+header{background:#222;color:#fff;padding:16px;text-align:center}
+.logo{max-width:120px;display:block;margin:10px auto}
+.container{max-width:900px;margin:auto;padding:20px}
+.card{background:var(--card);border-radius:14px;padding:14px;margin:10px 0;box-shadow:0 4px 12px rgba(0,0,0,.15);display:flex;align-items:center;gap:12px}
+.foodimg{width:70px;height:70px;border-radius:10px;object-fit:cover}
+.price{color:#0a7d2c;font-weight:bold;margin-right:auto}
+.tag{background:#ffc107;border-radius:8px;padding:2px 8px;font-size:12px;margin-right:6px}
+.hidden{opacity:.35;filter:grayscale(1)}
+button{border:none;padding:8px 12px;border-radius:8px;cursor:pointer}
+.add{background:#0a7d2c;color:#fff;margin:10px 0}
+.edit{background:#ffc107}
+.delete{background:#dc3545;color:#fff}
+form{display:none;background:var(--card);padding:15px;border-radius:14px;margin-top:15px}
+input,select{width:100%;padding:8px;margin:6px 0;border-radius:8px;border:1px solid #ccc}
+.save{background:#0a7d2c;color:white;width:100%}
+.adminToggle{position:fixed;bottom:15px;left:15px;background:#222;color:#fff}
+.managerLink{position:fixed;bottom:15px;right:15px;background:#0d6efd;color:#fff}
+</style>
 </head>
 <body>
+<header>
 
+<!-- ========= لوگو ========= -->
+<!-- فقط لینک عکس لوگو رو داخل src بزار -->
+<img class="logo" src="" alt="logo">
+
+<h1>منوی رستوران</h1>
+<p id="mode">حالت مشاهده</p>
+</header>
 <div class="container">
-    <div class="logo-section">
-        <img src="https://via.placeholder.com/150?text=LOGO" alt="لوگو رستوران" class="restaurant-logo">
-        <h1>رستوران خوشمزه</h1>
-    </div>
-
-    <div class="admin-section">
-        <h3>مدیریت منو</h3>
-        <input type="text" id="itemName" placeholder="نام غذا">
-        <input type="text" id="itemPrice" placeholder="قیمت">
-        <input type="text" id="itemImg" placeholder="لینک عکس غذا">
-        <button onclick="addItem()" style="width: 100%; margin-top: 10px; padding: 12px; background: var(--primary-color); color: white; border: none; border-radius: 8px; cursor: pointer;">افزودن به منو</button>
-    </div>
-
-    <div id="menuContainer">
-        </div>
+<button class="add" onclick="showForm()">+ افزودن آیتم</button>
+<div id="menu"></div>
+<form id="form">
+<input id="name" placeholder="نام غذا" required />
+<input id="price" placeholder="قیمت" required />
+<input id="img" placeholder="لینک عکس غذا" />
+<select id="category">
+<option>پیش غذا</option>
+<option>غذای اصلی</option>
+<option>نوشیدنی</option>
+</select>
+<input id="tag" placeholder="برچسب (مثلا تند / گیاهی / پرفروش)" />
+<label><input type="checkbox" id="hidden"> مخفی شود (تمام شده)</label>
+<button class="save" type="submit">ذخیره</button>
+</form>
 </div>
 
+<!-- لینک مستقیم برای آپلود عکس -->
+<a class="managerLink" target="_blank" href="https://imgbb.com/upload">آپلود عکس</a>
+
+<button class="adminToggle" onclick="toggleAdmin()">ورود مدیر</button>
 <script>
-    // دیتای اولیه
-    let menuData = JSON.parse(localStorage.getItem('restaurantMenu')) || [
-        { name: "همبرگر مخصوص", price: "۱۸۰,۰۰۰ تومان", img: "https://via.placeholder.com/100?text=Burger" },
-        { name: "سیب زمینی سرخ‌کرده", price: "۸۰,۰۰۰ تومان", img: "https://via.placeholder.com/100?text=Fries" }
-    ];
+let admin=false
+let editingIndex=null
+let menu=JSON.parse(localStorage.getItem('menu'))||[]
 
-    function renderMenu() {
-        const container = document.getElementById('menuContainer');
-        container.innerHTML = '';
+function render(){
+const box=document.getElementById('menu')
+box.innerHTML=''
+menu.forEach((item,i)=>{
+const div=document.createElement('div')
+div.className='card'+(item.hidden?' hidden':'')
+let controls=''
+if(admin){controls=`<div><button class='edit' onclick='edit(${i})'>ویرایش</button> <button class='delete' onclick='del(${i})'>حذف</button></div>`}
+div.innerHTML=`
+<img class='foodimg' src='${item.img||"https://via.placeholder.com/70"}'>
+<div>
+<b>${item.name}</b><br>
+<small>${item.category||''}</small>
+${item.tag?`<span class='tag'>${item.tag}</span>`:''}
+</div>
+<div class='price'>${item.price} تومان</div>
+${controls}`
+box.appendChild(div)
+})
+document.querySelector('.add').style.display=admin?'block':'none'
+document.getElementById('mode').textContent=admin?'حالت مدیر':'حالت مشاهده'
+}
 
-        menuData.forEach((item, index) => {
-            container.innerHTML += `
-                <div class="menu-item">
-                    <img src="${item.img || 'https://via.placeholder.com/100'}" class="food-img" alt="${item.name}">
-                    <div class="item-info">
-                        <h3>${item.name}</h3>
-                        <span class="item-price">${item.price}</span>
-                    </div>
-                    <button class="delete-btn" onclick="deleteItem(${index})">حذف</button>
-                </div>
-            `;
-        });
+function showForm(){document.getElementById('form').style.display='block'}
+function toggleAdmin(){const pass=prompt('رمز مدیر:');if(pass==='1234')admin=!admin;render()}
+function edit(i){editingIndex=i;showForm();Object.keys(menu[i]).forEach(k=>{if(document.getElementById(k))document.getElementById(k).value=menu[i][k]});document.getElementById('hidden').checked=menu[i].hidden}
+function del(i){menu.splice(i,1);save()}
+function save(){localStorage.setItem('menu',JSON.stringify(menu));render();document.getElementById('form').style.display='none';editingIndex=null}
 
-        localStorage.setItem('restaurantMenu', JSON.stringify(menuData));
-    }
-
-    function addItem() {
-        const name = document.getElementById('itemName').value;
-        const price = document.getElementById('itemPrice').value;
-        const img = document.getElementById('itemImg').value;
-
-        if (name && price) {
-            menuData.push({ name, price, img });
-            document.getElementById('itemName').value = '';
-            document.getElementById('itemPrice').value = '';
-            document.getElementById('itemImg').value = '';
-            renderMenu();
-        } else {
-            alert("لطفاً نام و قیمت را وارد کنید.");
-        }
-    }
-
-    function deleteItem(index) {
-        if(confirm("از حذف این غذا مطمئن هستید؟")) {
-            menuData.splice(index, 1);
-            renderMenu();
-        }
-    }
-
-    renderMenu();
+document.getElementById('form').onsubmit=e=>{
+e.preventDefault()
+const item={
+name:name.value,
+price:price.value,
+img:img.value,
+category:category.value,
+tag:tag.value,
+hidden:hidden.checked
+}
+if(editingIndex!==null)menu[editingIndex]=item
+else menu.push(item)
+save()
+}
+render()
 </script>
-
 </body>
 </html>
