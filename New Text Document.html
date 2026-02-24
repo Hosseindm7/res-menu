@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مدیریت منوی رستوران</title>
+    <style>
+        :root {
+            --primary-color: #e67e22;
+            --dark-color: #2c3e50;
+            --light-color: #f4f4f4;
+        }
+
+        body {
+            font-family: 'Tahoma', sans-serif;
+            background-color: var(--light-color);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--dark-color);
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 10px;
+        }
+
+        .admin-section {
+            background: #eee;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        input, button {
+            padding: 10px;
+            margin: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background-color: #d35400;
+        }
+
+        .menu-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .menu-item:last-child {
+            border-bottom: none;
+        }
+
+        .item-info h3 {
+            margin: 0;
+            color: var(--dark-color);
+        }
+
+        .item-price {
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        .delete-btn {
+            background-color: #e74c3c;
+            padding: 5px 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🍴 منوی رستوران ما</h1>
+
+    <div class="admin-section">
+        <h3>➕ افزودن غذای جدید</h3>
+        <input type="text" id="itemName" placeholder="نام غذا">
+        <input type="text" id="itemPrice" placeholder="قیمت (مثلاً ۵۰,۰۰۰ تومان)">
+        <button onclick="addItem()">افزودن به منو</button>
+    </div>
+
+    <div id="menuContainer">
+        </div>
+</div>
+
+<script>
+    let menuData = JSON.parse(localStorage.getItem('restaurantMenu')) || [
+        { name: "پیتزا مخصوص", price: "۱۸۰,۰۰۰ تومان" },
+        { name: "جوجه کباب", price: "۱۵۰,۰۰۰ تومان" }
+    ];
+
+    function renderMenu() {
+        const container = document.getElementById('menuContainer');
+        container.innerHTML = '';
+
+        menuData.forEach((item, index) => {
+            container.innerHTML += `
+                <div class="menu-item">
+                    <div class="item-info">
+                        <h3>${item.name}</h3>
+                        <span class="item-price">${item.price}</span>
+                    </div>
+                    <button class="delete-btn" onclick="deleteItem(${index})">حذف</button>
+                </div>
+            `;
+        });
+
+        localStorage.setItem('restaurantMenu', JSON.stringify(menuData));
+    }
+
+    function addItem() {
+        const name = document.getElementById('itemName').value;
+        const price = document.getElementById('itemPrice').value;
+
+        if (name && price) {
+            menuData.push({ name, price });
+            document.getElementById('itemName').value = '';
+            document.getElementById('itemPrice').value = '';
+            renderMenu();
+        } else {
+            alert("لطفاً هر دو فیلد را پر کنید.");
+        }
+    }
+
+    function deleteItem(index) {
+        if(confirm("آیا از حذف این آیتم مطمئن هستید؟")) {
+            menuData.splice(index, 1);
+            renderMenu();
+        }
+    }
+
+    // اجرای اولیه
+    renderMenu();
+</script>
+
+</body>
+</html>
