@@ -3,77 +3,96 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مدیریت منوی رستوران</title>
+    <title>منوی حرفه‌ای رستوران</title>
     <style>
         :root {
             --primary-color: #e67e22;
             --dark-color: #2c3e50;
-            --light-color: #f4f4f4;
+            --light-color: #ffffff;
+            /* ۱. بخش تغییر فونت: نام فونت دلخواه را اینجا جایگزین کنید */
+            --main-font: 'Tahoma', 'Arial', sans-serif;
         }
 
         body {
-            font-family: 'Tahoma', sans-serif;
-            background-color: var(--light-color);
+            font-family: var(--main-font);
             margin: 0;
             padding: 20px;
+            
+            /* ۲. بک‌گراند شطرنجی ساده */
+            background-color: #f0f0f0;
+            background-image: linear-gradient(45deg, #e5e5e5 25%, transparent 25%, transparent 75%, #e5e5e5 75%, #e5e5e5), 
+                              linear-gradient(45deg, #e5e5e5 25%, transparent 25%, transparent 75%, #e5e5e5 75%, #e5e5e5);
+            background-size: 40px 40px;
+            background-position: 0 0, 20px 20px;
         }
 
         .container {
             max-width: 800px;
             margin: 0 auto;
-            background: white;
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        /* ۳. استایل لوگوی رستوران */
+        .logo-section {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .restaurant-logo {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--primary-color);
         }
 
         h1 {
             text-align: center;
             color: var(--dark-color);
-            border-bottom: 2px solid var(--primary-color);
-            padding-bottom: 10px;
+            margin-top: 10px;
         }
 
         .admin-section {
-            background: #eee;
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 20px;
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            border: 1px dashed #ccc;
         }
 
-        input, button {
+        .admin-section input {
             padding: 10px;
             margin: 5px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-        }
-
-        button {
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        button:hover {
-            background-color: #d35400;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            width: calc(33% - 20px);
         }
 
         .menu-item {
             display: flex;
-            justify-content: space-between;
             align-items: center;
             padding: 15px;
-            border-bottom: 1px solid #ddd;
+            border-bottom: 1px solid #eee;
+            gap: 20px;
         }
 
-        .menu-item:last-child {
-            border-bottom: none;
+        /* ۴. استایل عکس غذاها */
+        .food-img {
+            width: 80px;
+            height: 80px;
+            border-radius: 12px;
+            object-fit: cover;
+            background-color: #ddd; /* جایگزین اگر عکس نبود */
+        }
+
+        .item-info {
+            flex-grow: 1;
         }
 
         .item-info h3 {
-            margin: 0;
+            margin: 0 0 5px 0;
             color: var(--dark-color);
         }
 
@@ -83,21 +102,29 @@
         }
 
         .delete-btn {
-            background-color: #e74c3c;
-            padding: 5px 10px;
+            background-color: #ff4757;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>🍴 منوی رستوران ما</h1>
+    <div class="logo-section">
+        <img src="https://via.placeholder.com/150?text=LOGO" alt="لوگو رستوران" class="restaurant-logo">
+        <h1>رستوران خوشمزه</h1>
+    </div>
 
     <div class="admin-section">
-        <h3>➕ افزودن غذای جدید</h3>
+        <h3>مدیریت منو</h3>
         <input type="text" id="itemName" placeholder="نام غذا">
-        <input type="text" id="itemPrice" placeholder="قیمت (مثلاً ۵۰,۰۰۰ تومان)">
-        <button onclick="addItem()">افزودن به منو</button>
+        <input type="text" id="itemPrice" placeholder="قیمت">
+        <input type="text" id="itemImg" placeholder="لینک عکس غذا">
+        <button onclick="addItem()" style="width: 100%; margin-top: 10px; padding: 12px; background: var(--primary-color); color: white; border: none; border-radius: 8px; cursor: pointer;">افزودن به منو</button>
     </div>
 
     <div id="menuContainer">
@@ -105,9 +132,10 @@
 </div>
 
 <script>
+    // دیتای اولیه
     let menuData = JSON.parse(localStorage.getItem('restaurantMenu')) || [
-        { name: "پیتزا مخصوص", price: "۱۸۰,۰۰۰ تومان" },
-        { name: "جوجه کباب", price: "۱۵۰,۰۰۰ تومان" }
+        { name: "همبرگر مخصوص", price: "۱۸۰,۰۰۰ تومان", img: "https://via.placeholder.com/100?text=Burger" },
+        { name: "سیب زمینی سرخ‌کرده", price: "۸۰,۰۰۰ تومان", img: "https://via.placeholder.com/100?text=Fries" }
     ];
 
     function renderMenu() {
@@ -117,6 +145,7 @@
         menuData.forEach((item, index) => {
             container.innerHTML += `
                 <div class="menu-item">
+                    <img src="${item.img || 'https://via.placeholder.com/100'}" class="food-img" alt="${item.name}">
                     <div class="item-info">
                         <h3>${item.name}</h3>
                         <span class="item-price">${item.price}</span>
@@ -132,29 +161,28 @@
     function addItem() {
         const name = document.getElementById('itemName').value;
         const price = document.getElementById('itemPrice').value;
+        const img = document.getElementById('itemImg').value;
 
         if (name && price) {
-            menuData.push({ name, price });
+            menuData.push({ name, price, img });
             document.getElementById('itemName').value = '';
             document.getElementById('itemPrice').value = '';
+            document.getElementById('itemImg').value = '';
             renderMenu();
         } else {
-            alert("لطفاً هر دو فیلد را پر کنید.");
+            alert("لطفاً نام و قیمت را وارد کنید.");
         }
     }
 
     function deleteItem(index) {
-        if(confirm("آیا از حذف این آیتم مطمئن هستید؟")) {
+        if(confirm("از حذف این غذا مطمئن هستید؟")) {
             menuData.splice(index, 1);
             renderMenu();
         }
     }
 
-    // اجرای اولیه
     renderMenu();
 </script>
 
 </body>
 </html>
-
-
